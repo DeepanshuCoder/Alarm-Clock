@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Alarm Clock</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+
+<body>
+    <div id="container">
+        <img src="clock.png" alt="alarm clock" height="100px" width="100px">
+    </div>
+    <div id="container1">
+        <h1>Alarm Clock</h1>
+    </div>
+
+    <div id="container2">
+        <label for="alarmTime">Set Alarm Time:</label>
+        <input type="time" id="alarmTime">
+    </div>
+
+    <div id="container3">
+        <button id="setAlarm" class="Alarm">Set Alarm</button>
+    </div>
+
+    <p id="displayAlarmTime"></p>
+
+    <audio id="alarmSound">
+        <source src="alarm.mp3" type="audio/mpeg">
+    </audio>
+
+
+    <script>
+        const alarmTimeInput = document.getElementById("alarmTime");
+        const setAlarmButton = document.getElementById("setAlarm");
+        const alarmSound = document.getElementById("alarmSound");
+        const displayAlarmTime = document.getElementById("displayAlarmTime");
+
+        setAlarmButton.addEventListener("click", () => {
+            const alarmTime = alarmTimeInput.value;
+            if (alarmTime) {
+                const now = new Date();
+                const alarmDate = new Date(now.toDateString() + " " + alarmTime);
+
+                if (alarmDate > now) {
+                    const timeUntilAlarm = alarmDate.getTime() - now.getTime();
+                    let Hour = alarmDate.getHours();
+                    //console.log("Current time is: "+ Hour);
+
+                    let Minutes = alarmDate.getMinutes();
+                    //console.log("Current time is: "+ Minutes);
+
+                    //let Seconds = alarmDate.getSeconds();
+                    //console.log("Current time is: "+ Seconds);
+
+                    let prepand = (Hour >= 12) ? "PM" : "AM"; //ternary operator
+
+                    Hour = (Hour >= 12) ? Hour - 12 : Hour; //ternary operator
+
+                    const formattedTime = `${Hour}:${Minutes} ${prepand}`;
+                    displayAlarmTime.textContent = (`Alarm is set for: ${formattedTime}`);
+
+                    setTimeout(() => {
+                        alarmSound.play();
+                    }, timeUntilAlarm);
+                }
+                else {
+                    displayAlarmTime.textContent = `Please set the future time for the alarm`;
+                }
+            }
+            else {
+                displayAlarmTime.textContent = `Please select a valid time`;
+            }
+        });
+    </script>
+</body>
+
+</html>
